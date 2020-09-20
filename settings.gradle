@@ -1,4 +1,1 @@
 rootProject.name = 'myalomatika-access-control-service'
-include(':myalomatika-access-control-service-core', ':myalomatika-access-control-service-rs')
-project(':myalomatika-access-control-service-core').projectDir = new File(settingsDir, 'modules/core')
-project(':myalomatika-access-control-service-rs').projectDir = new File(settingsDir, 'modules/rs')

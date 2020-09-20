@@ -1,43 +1,48 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.3.RELEASE"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
-    }
-}
-
 plugins {
-    id 'idea'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
 
-def core_module = project(':myalomatika-access-control-service-core')
-def rs_module = project(':myalomatika-access-control-service-rs')
+group = 'com.cryfish.myalomatika'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '14'
 
-subprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-
-    apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_14
-        targetCompatibility = JavaVersion.VERSION_14
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
-configure (rs_module){
-    apply plugin: 'org.springframework.boot'
+repositories {
+    mavenCentral()
 }
 
-configure([core_module, rs_module]) {
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
+ext {
+    set('springCloudVersion', "Hoxton.SR8")
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-zookeeper-config'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
 }

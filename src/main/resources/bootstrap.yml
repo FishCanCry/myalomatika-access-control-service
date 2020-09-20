@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: myalomatika-access-control-service
+  cloud:
+    zookeeper:
+      connectString: ${MYALOMATIKA_ZOOKEEPER_URL}
+      config:
+        enabled: true
+        root: service-config
+        defaultContext: apps
+        profileSeparator: '/'
+
